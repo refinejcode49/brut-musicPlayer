@@ -3,7 +3,7 @@ import { Button, H1, Navbar, Profile } from "./styles";
 
 
 interface IProps {
-    profile?: string;
+    profile?: string | null;
 }
 
 const Nav:React.FC<IProps> = ({profile}) => {
@@ -18,19 +18,18 @@ const Nav:React.FC<IProps> = ({profile}) => {
 
     return (
         <>
-        <Navbar>
-            <H1>Brut</H1>
-            {!profile ? (
-                <Button onClick={handleClick}>
-                    Login
-                </Button>
-            ) : (
-                <Profile>
-                    <img src={profile}></img>
-                </Profile>
-            )
-            }
-        </Navbar>
+            <Navbar>
+                <H1>Brut</H1>
+                {!profile ? (
+                    <Button onClick={handleClick}>
+                        Login
+                    </Button>
+                ) : (
+                    <Profile
+                        src={profile}
+                    />
+                )}
+            </Navbar>
         </>
     )
 }

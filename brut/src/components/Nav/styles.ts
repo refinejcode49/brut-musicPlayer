@@ -7,7 +7,7 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 background: #fff;
-border-bottom: 2px solid #000
+border-bottom: 2px solid #000;
 padding: 1em 1em 1em 1em;
 box-sizing: border-box;
 `
@@ -19,9 +19,17 @@ margin-top: 0.5em;
 margin-bottom: 0.5em;
 margin-left: 1em;
 `
-
-export const Profile = styled.image`
-
+interface IProfileProps {
+    profile: string;
+}
+export const Profile = styled.img<IProfileProps>`
+border: 2px solid #000;
+background-image: ${props => `url(${props.profile})`};
+margin: 2em;
+width: 3em;
+height: 3em;
+background-size- cover;
+filter: grayscale(1);
 `
 
 export const Button = styled.button`
