@@ -1,19 +1,26 @@
 import Select from "react-select"
+import Controls from "../Controls"
+import type { ITrack } from "../../types"
 
 interface IProps {
     playlist: Array<string>;
+    getUserTracks: any;
+    token: string | null;
+    tracks: Array<string>
+    track: ITrack | null
+    setTrack: React.Dispatch<React.SetStateAction<ITrack | null>>
 }
 
-const Sidebar:React.FC<IProps> = ({ playlist }) => {
+const Sidebar:React.FC<IProps> = ({ playlist, getUserTracks, token, tracks, track, setTrack}) => {
 
     const styles = {
-        menuList: (styles:any) => {
+        menuList: (styles: any) => {
             return {
                 ...styles,
                 maxHeight: "25vh"
             };
         },
-        option: (styles:any, { isFocused }: { isFocused :any}) => {
+        option: (styles: any, { isFocused }: { isFocused : any}) => {
             return {
                 ... styles,
                 backgroundColor: isFocused ? "#9999999" : null,
@@ -22,13 +29,18 @@ const Sidebar:React.FC<IProps> = ({ playlist }) => {
         }
     }
 
-    const handleChange = ((e:any) => {
-        console.log(e.id)
+    const handleChange = ((e: any) => {
+        getUserTracks(e.id)
     })
 
 
     return(
         <>
+            <Controls
+            token={token}
+            tracks={tracks}
+            setTrack={setTrack}
+            />
             <Select 
             options={playlist} 
             getOptionLabel={(e:any) => e.name}

@@ -7,16 +7,18 @@ import axios from "axios"
 import { GlobalStyle } from "../../styles"
 import { Container, TrackViewer, Side } from "./styles"
 import Sidebar from "../Sidebar"
-
+import type { ITrack } from "../../types"
 
 
 const App = () => {
 
-  const GlobalStyleProxy:any = GlobalStyle
+  const GlobalStyleProxy: any = GlobalStyle
 
   const [token, setToken] = useState<string | null>(null)
   const [profile, setProfile] = useState<string | null>(null)
   const [playlist, setPlaylist] = useState([])
+  const [tracks, setTracks] = useState<Array<string> | null>(null)
+  const [track, setTrack] = useState<ITrack | null>(null)
 
   const clientId = import.meta.env.VITE_CLIENT_ID;
   const params = new URLSearchParams(window.location.search);
@@ -41,6 +43,7 @@ const App = () => {
       setToken(accessToken)
   }
   }
+
 const getUserInfo = async () => {
   const { data } = await axios.get("https://api.spotify.com/v1/me", {
     headers: {
@@ -59,12 +62,25 @@ const getUserInfo = async () => {
       "Content-Type": "application/json",
     },
   })
-  
   const playlist = data.items.map(({name, id}: {name: string, id: number}) => {
     return {name, id}
   })
   setPlaylist(playlist)
-}
+  }
+
+
+  const getUserTracks = async (id:string) => {
+    const { data } = await axios.get(`https://api.spotify.com/v1/playlists/${id}/tracks`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+  //console.log(data)
+  const uris = Object.entries(data.items).map(([key, val]) => val.track.uri)
+  //console.log(uris)
+  setTracks(uris)
+  }
 
 
   if (!token) {
@@ -88,7 +104,12 @@ const getUserInfo = async () => {
           </TrackViewer>
         <Side>
           <Sidebar 
-          playlist={playlist} 
+          track={track}
+          token={token}
+          tracks={tracks}
+          playlist={playlist}
+          getUserTracks={getUserTracks} 
+          setTrack={setTrack}
           />
         </Side>
         </Container>
