@@ -100,7 +100,9 @@ const getUserInfo = async () => {
         />
         <Container>
           <TrackViewer>
-            <TrackInfo />
+            <TrackInfo
+              track={track}
+             />
           </TrackViewer>
         <Side>
           <Sidebar 
